@@ -1,4 +1,4 @@
-package com.hwt.notes.pattern.single;
+package com.hwt.notes.pattern.create.single;
 
 import java.lang.reflect.Field;
 

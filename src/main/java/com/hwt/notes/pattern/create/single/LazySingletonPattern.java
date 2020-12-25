@@ -1,4 +1,4 @@
-package com.hwt.notes.pattern.single;
+package com.hwt.notes.pattern.create.single;
 
 /**
  * 注意 此种方式在第一次使用时初始化实例所以需要多线程进行考量

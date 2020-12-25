@@ -1,4 +1,4 @@
-package com.hwt.notes.pattern.single;
+package com.hwt.notes.pattern.create.single;
 
 /**
  * 单例很强 就怕反射。。。。
