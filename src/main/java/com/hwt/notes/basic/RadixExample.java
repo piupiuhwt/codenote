@@ -12,6 +12,8 @@ public class RadixExample {
         //上面输出是f0000000
         System.out.println(4026531840L == 0b11110000000000000000000000000000);
         //这个输出啥
+
+        System.out.println("".equals(new String(new char[]{'a','c'}, 0, 0)));
     }
 
 }
