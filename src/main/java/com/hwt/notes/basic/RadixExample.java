@@ -1,5 +1,9 @@
 package com.hwt.notes.basic;
 
+import java.lang.management.ManagementFactory;
+import java.util.HashMap;
+import java.util.Map;
+
 //进制问题
 //java中默认没有无符号数
 //所以记得 int类型 二进制表示时 最高位为1 表示负数
@@ -14,6 +18,13 @@ public class RadixExample {
         //这个输出啥
 
         System.out.println("".equals(new String(new char[]{'a','c'}, 0, 0)));
+
+        Map<String,Boolean> c = new HashMap();
+        Boolean taskStatus = true;
+        System.out.println(taskStatus == null);
+
+
+        System.out.println(ManagementFactory.getOperatingSystemMXBean().getName());
     }
 
 }
