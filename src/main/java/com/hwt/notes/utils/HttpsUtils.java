@@ -1,16 +1,16 @@
 package com.hwt.notes.utils;
 
+import com.sun.xml.internal.messaging.saaj.util.ByteInputStream;
+import lombok.Data;
+
 import javax.net.ssl.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
+import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.security.GeneralSecurityException;
-import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
 
+@Data
 public class HttpsUtils {
     public static String baseUrl = "https://cdn.scaleflex.it/demo/360-car/iris-";
     public static String urlSuffix = ".jpeg";
@@ -18,6 +18,7 @@ public class HttpsUtils {
     MyX509TrustManager xtm = new MyX509TrustManager();
     MyHostnameVerifier hnv = new MyHostnameVerifier();
     String url;
+    String contentType;
 
     public HttpsUtils(String HttpsUrl) {
         this.url = HttpsUrl;
@@ -37,29 +38,29 @@ public class HttpsUtils {
         HttpsURLConnection.setDefaultHostnameVerifier( hnv );
     }
 
-    public String getResult() {
-        String res = "";
+    public byte[] getResult() {
+        ByteArrayOutputStream resultStream = new ByteArrayOutputStream();
+        byte[] tempBytes = new byte[1024 * 1024];
         try {
             URLConnection urlCon = (new URL(url)).openConnection();
-            BufferedReader in = new BufferedReader(new InputStreamReader(urlCon.getInputStream()));
-            String line;
-            while ((line = in.readLine()) != null)
-            {
-                //System.out.println(line);
-                res += line;
+            contentType = urlCon.getContentType();
+            InputStream inputStream = urlCon.getInputStream();
+            int len = 0;
+            while ((len = inputStream.read(tempBytes))!=-1){
+                resultStream.write(tempBytes,0,len);
             }
-
             //   增加自己的代码
-        } catch( IOException ioe ) {
-            ioe.printStackTrace();
         }
         catch (Exception e) {
             e.printStackTrace();
         }
-
-        return res;
-
-
+        byte[] resultBytes = resultStream.toByteArray();
+        try {
+            resultStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return resultBytes;
     }
 
     class MyX509TrustManager implements X509TrustManager {
@@ -81,13 +82,8 @@ public class HttpsUtils {
     }
 
     public static void main(String[] args) {
-        try {
-            URL url = new URL(baseUrl+1+urlSuffix);
-            URLConnection urlConnection = url.openConnection();
-//            urlConnection.
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        HttpsUtils httpsUtils = new HttpsUtils(baseUrl + 1 + urlSuffix);
+        byte[] result = httpsUtils.getResult();
     }
 
 }
