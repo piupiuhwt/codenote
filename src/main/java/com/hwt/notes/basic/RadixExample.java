@@ -1,8 +1,7 @@
 package com.hwt.notes.basic;
 
-import java.lang.management.ManagementFactory;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 //进制问题
 //java中默认没有无符号数
@@ -19,12 +18,16 @@ public class RadixExample {
 
         System.out.println("".equals(new String(new char[]{'a','c'}, 0, 0)));
 
-        Map<String,Boolean> c = new HashMap();
-        Boolean taskStatus = true;
-        System.out.println(taskStatus == null);
+        String useString = "/test/task_0/rule_234542/adfasdf12313fdgdg.pcap";
+        Pattern pattern = Pattern.compile("/task_\\d+/");
+        Matcher matcher = pattern.matcher(useString);
+        if (matcher.find()) {
+            int start = matcher.start();
+            int end = matcher.end();
+            System.out.println(useString.substring(start+1, end-1));
+            System.out.println("start : " + start + " end : " + end);
+        }
 
-
-        System.out.println(ManagementFactory.getOperatingSystemMXBean().getName());
     }
 
 }
