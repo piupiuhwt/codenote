@@ -82,8 +82,11 @@ public class HttpsUtils {
     }
 
     public static void main(String[] args) {
-        HttpsUtils httpsUtils = new HttpsUtils(baseUrl + 1 + urlSuffix);
-        byte[] result = httpsUtils.getResult();
+        for (int i=1;i<=36;i++){
+            HttpsUtils httpsUtils = new HttpsUtils(baseUrl + i + urlSuffix);
+            byte[] result = httpsUtils.getResult();
+            FileUtil.bytesToFile("img\\"+i+".jpg", result);
+        }
     }
 
 }
