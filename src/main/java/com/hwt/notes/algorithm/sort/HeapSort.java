@@ -5,12 +5,10 @@ import java.util.Arrays;
 public class HeapSort<T extends Comparable<T>> {
     public static void main(String[] args) {
         String[] testArray = {"123","23","4345","674","098","34","21","06","s2","p3","b4","dddd"};
-        System.out.println(5 >> 1);
+//        System.out.println(5 >> 1);
         HeapSort<String> heapSorter = new HeapSort<>();
         heapSorter.sort(testArray);
-        for(int i=0;i<testArray.length;i++){
-            System.out.println(testArray[i]);
-        }
+        System.out.println("最后排序结果："+Arrays.toString(testArray));
     }
 
     public void sort(T[] sortArray){
@@ -19,15 +17,18 @@ public class HeapSort<T extends Comparable<T>> {
         }
         //1. 构建堆
         initHeap(sortArray);
+        System.out.println("堆初始化成功："+Arrays.toString(sortArray));
+        //实现
         swapAndShiftDown(sortArray,0,sortArray.length-1);
     }
 
 
     private void initHeap(T[] sortArray){
+//        1.从第一个节点开始构建大顶堆，这个有点绕，
         for(int i = 1; i < sortArray.length; i++){
             int tempPos = i;
             int parentPos;
-            while(true){
+            while(true){//循环是为了处理父元素和子元素的大小问题
                 parentPos = tempPos-1;
                 if(parentPos<0){
                     break;
@@ -40,7 +41,6 @@ public class HeapSort<T extends Comparable<T>> {
                 tempPos=parentPos;
             }
         }
-        System.out.println(Arrays.toString(sortArray));
     }
 
     //4. 重复执行2，3

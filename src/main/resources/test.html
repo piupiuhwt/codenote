@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div onkeydown="getposition(event)" onclick="getposition(event)" contenteditable>
+        <span>adfadfadfads</span>fadsfsda<span>fadfasdfasdf</span>
+    </div>
+    <script>
+        function getposition(event){
+            let target = event.target;
+            console.log(target.tagName)
+            if (target.tagName === "SPAN") {
+                console.log(target.parentElement.innerText);
+                for (let elementsByTagNameKey in target.parentElement.getElementsByTagName("SPAN")) {
+
+                }
+            }
+            console.log(target);
+            console.log(document.getSelection());
+            let focusOffset = document.getSelection().focusOffset;
+            console.log(focusOffset)
+        }
+    </script>
+</body>
+</html>

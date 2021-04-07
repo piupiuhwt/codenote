@@ -5,7 +5,7 @@ import com.hwt.notes.utils.Function;
 
 import java.io.IOException;
 
-
+//交替打印
 public class SupersedePrint {
 
     public static final String monitor = "monitor";

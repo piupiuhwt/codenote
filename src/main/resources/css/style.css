@@ -1,0 +1,110 @@
+html,body{
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+}
+#wrapper{
+    margin: 0 auto;
+    width: 100%;
+    height: 800px;
+    position: relative;
+    background: rgba(255,255,255,1);
+}
+#screen{
+    position: relative;
+    top: 150px;
+    width: 900px;
+    height: 500px;
+    margin: 0 auto;
+    padding: 0;
+}
+#screen-show{
+    position: absolute;
+    width: 700px;
+    height: 600px;
+    margin: 0;
+    padding: 0;
+}
+#screen-operation{
+    position: absolute;
+    float: right;
+    right: 0;
+    width: 200px;
+    height: 600px;
+    margin: 0;
+    padding: 0;
+}
+#content{
+    position: absolute;
+    top: 220px;
+    left: 320px;
+    transform-style: preserve-3d;
+    perspective-origin: 50% 50%;
+    width: 60px;
+    height: 60px;
+}
+.cube{
+    position: absolute;
+    transform-style: preserve-3d;
+    perspective-origin: 50% 50%;
+    width: 60px;
+    height: 60px;
+    left: 0;
+    top: 0;
+}
+.selected > div{
+    background-color: rgba(255,0,0,0.1);
+}
+#c1 .front{
+    transform: translateX(0px) translateY(0px) translateZ(-30px);
+}
+#c3{
+    transform: translateX(0px) translateY(0px) translateZ(-60px);
+}
+.surface{
+    position: absolute;
+    transform-style: preserve-3d;
+    perspective-origin: 50% 50%;
+    width: 60px;
+    height: 60px;
+    background-color: rgba(200,200,200,0.3);
+    box-shadow: inset 0 0 10px  rgba(125,125,125,0.2);
+}
+.front{
+    transform: translateZ(30px);
+}
+.back{
+    transform: translateZ(-30px) rotateY(180deg);
+}
+.left{
+    transform: translateX(-30px) rotateY(90deg);
+}
+.right{
+    transform: translateX(30px) rotateY(-90deg);
+}
+.top{
+    transform: translateY(30px) rotateX(90deg);
+}
+.bottom{
+    transform: translateY(-30px) rotateX(-90deg);
+}
+
+@keyframes mainTransform {
+    to{
+        transform: rotateX(0deg) rotateY(0deg);
+    }
+}
+@keyframes leftTransform {
+    to{
+        transform: rotateX(0deg) rotateY(90deg);
+    }
+}
+@keyframes topTransform {
+    to{
+        transform: rotateX(-90deg) rotateY(0deg);
+    }
+}
+.aButton{
+    border-radius: 50%;
+}
