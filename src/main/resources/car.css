@@ -1,0 +1,14 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+body{
+    background: black;
+}
+#container{
+    display: flex;
+    justify-content: center;
+}
+img{
+    height: 95vh;
+}

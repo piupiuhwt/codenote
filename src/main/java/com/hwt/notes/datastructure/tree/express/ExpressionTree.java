@@ -157,7 +157,7 @@ public class ExpressionTree<U,T> {
 
     @Data
     @ToString
-    class Node<U,T> {
+    static class Node<U,T> {
         private Type type;
         private U operator;
         private T operand;
