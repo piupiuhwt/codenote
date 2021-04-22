@@ -4,23 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="./js/jquery.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
     <style>
+        html,body{
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            height: 100%;
+        }
         @font-face {
             font-family: tiansu;
             src: url("./aa.ttf");
         }
         #wrapper {
-            top: 30px;
+            top: 50px;
             margin: 0 auto;
             width: 100%;
             position: relative;
         }
         #title {
             text-align: center;
+            width: 100%;
+            align-self: center;
             height: 40px;
             font-family: tiansu;
             font-size: 30px;
-            margin-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        #my-lucky{
+            margin: 0 auto;
         }
     </style>
 </head>
@@ -30,51 +45,85 @@
         神奇的餐餐转盘
     </div>
     <div id="my-lucky"></div>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+<!--                <div class="modal-header">-->
+<!--                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+<!--                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>-->
+<!--                </div>-->
+                <div class="modal-body" id="alert-body" style="font-family: tiansu;font-size: 24px">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<!--<script src="./js/lucky-canvas.umd.min.js"></script>-->
 <script src="./js/lucky.js"></script>
 <script>
-    // 设置奖品
-    const prizes = []
-    let data = ['煮面', '紫菜卷', '麻辣烫', '五爷拌面', '烧烤', '西餐', '苕粉']
-    data.forEach((item, index) => {
-        prizes.push({
-            title: item,
-            background: index % 2 ? '#ffffff' : '#ffffff',
-            fonts: [{ text: item, top: '24%',fontSize: '30px',fontColor: '#000000',fontFamily: 'tiansu' }],
-            // imgs:[{ src: `./img/${index}.png`, width: '30%', top: '35%' }],
+    const prizesUrl = "http://localhost:8088/prizes";
+    const resultUrl = "http://localhost:8088/result";
+    fetch(prizesUrl)
+        .then(function (response) {
+            return response.json()
         })
-    })
-    // 创建大转盘抽奖
-    let luckyWheel = new LuckyCanvas.LuckyWheel({
-        el: '#my-lucky',
-        width: '300px',
-        height: '300px',
-    }, {
-        prizes: prizes,
-        defaultStyle: {
-            fontColor: '#000000',
-            fontSize: '14px'
-        },
-        blocks: [
-            { padding: '3px', background: '#000000' }
-        ],
-        buttons: [
-            { radius: '16px', background: '#f6c66f', pointer: false ,
-                imgs: [{ src: `./pointer.png`,top: '-75px'}]
-            },
-        ],
-        start () {
-            luckyWheel.play()
-            setTimeout(() => {
-                luckyWheel.stop(Math.random() * 8 >> 0)
-            }, 3000)
-        },
-        end (prize) {
-            alert(`恭喜你获得${prize.title}`)
-        },
-    })
+        .then(function (result){
+            // 设置奖品
+            const prizes = []
+            let data = result || ['煮面', '紫菜卷', '麻辣烫', '五爷拌面', '烧烤', '自己做', '苕粉','喝粥']
+            data.forEach((item, index) => {
+                prizes.push({
+                    title: item,
+                    background: index % 2 ? '#ffffff' : '#ffffff',
+                    fonts: [{ text: item, top: '24%',fontSize: '22px',fontColor: '#000000',fontStyle: 'tiansu' }],
+                    // imgs:[{ src: `./img/${index}.png`, width: '30%', top: '35%' }],
+                })
+            })
+            // 创建大转盘抽奖
+            let luckyWheel = new LuckyCanvas.LuckyWheel({
+                el: '#my-lucky',
+                width: '300px',
+                height: '300px',
+            }, {
+                prizes: prizes,
+                defaultConfig: {
+                    gutter: '3px'
+                },
+                defaultStyle: {
+                    fontColor: '#000000',
+                    fontSize: '14px'
+                },
+                blocks: [
+                    { padding: '3px', background: '#000000' }
+                ],
+                buttons: [
+                    { radius: '16px', background: '#f6c66f', pointer: false ,
+                        imgs: [{ src: `./pointer.png`,top: '-75px'}]
+                    },
+                ],
+                start () {
+                    luckyWheel.play()
+                    fetch(resultUrl).then(function (response) {
+                        return response.json()
+                    }).then(function (data) {
+                        luckyWheel.stop(data)
+                    })
+                    // setTimeout(() => {
+                    //     luckyWheel.stop(Math.random() * 8 >> 0)
+                    // }, 3000)
+                },
+                end (prize) {
+                    $('#alert-body').html('<img src="test.png" height="100" width="100"/>'+"吃吃吃"+prize.title)
+                    $('#myModal').modal('toggle')
+                },
+            })
+        })
+
 </script>
 </body>
 </html>
