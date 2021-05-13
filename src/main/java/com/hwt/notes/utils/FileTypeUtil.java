@@ -14,20 +14,16 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;  
 import javax.imageio.stream.ImageInputStream;  
     
-public class FileTypeTest    
+public class FileTypeUtil
 {    
     public final static Map<String, String> FILE_TYPE_MAP = new HashMap<String, String>();    
         
-    private FileTypeTest(){}    
+    private FileTypeUtil(){}
+
     static{    
         getAllFileType();  //初始化文件类型信息    
     }    
-        
-    /**  
-     * Created on 2010-7-1   
-     * <p>Discription:[getAllFileType,常见文件头信息]</p>  
-     * @author:[shixing_11@sina.com]  
-     */    
+
     private static void getAllFileType()    
     {    
         FILE_TYPE_MAP.put("jpg", "FFD8FF"); //JPEG (jpg)    
@@ -46,7 +42,8 @@ public class FileTypeTest
         FILE_TYPE_MAP.put("dbx", "CFAD12FEC5FD746F");  //Outlook Express (dbx)    
         FILE_TYPE_MAP.put("pst", "2142444E");  //Outlook (pst)    
         FILE_TYPE_MAP.put("xls", "D0CF11E0");  //MS Word    
-        FILE_TYPE_MAP.put("doc", "D0CF11E0");  //MS Excel 注意：word 和 excel的文件头一样    
+        FILE_TYPE_MAP.put("ppt", "D0CF11E0A1B11AE1");  //MS Word
+        FILE_TYPE_MAP.put("doc", "D0CF11E0");  //MS Excel 注意：word 和 excel的文件头一样
         FILE_TYPE_MAP.put("mdb", "5374616E64617264204A");  //MS Access (mdb)    
         FILE_TYPE_MAP.put("wpd", "FF575043"); //WordPerfect (wpd)     
         FILE_TYPE_MAP.put("eps", "252150532D41646F6265");    
@@ -66,24 +63,12 @@ public class FileTypeTest
     
     public static void main(String[] args) throws Exception    
     {    
-        File f = new File("c://aaa.gif");    
-        if (f.exists())    
-        {    
-            String filetype1 = getImageFileType(f);    
-            System.out.println(filetype1);    
-            String filetype2 = getFileByFile(f);    
-            System.out.println(filetype2);    
-        }    
+        File f = new File("C:\\Users\\hong.wentao\\Desktop\\lll.xlsx");
+        String fileByFile = getFileByFile(f);
+        System.out.println(fileByFile);
     }    
-    
-    /**  
-     * Created on 2010-7-1   
-     * <p>Discription:[getImageFileType,获取图片文件实际类型,若不是图片则返回null]</p>  
-     * @param File  
-     * @return fileType  
-     * @author:[shixing_11@sina.com]  
-     */    
-    public final static String getImageFileType(File f)    
+
+    public static String getImageFileType(File f)
     {    
         if (isImage(f))  
         {  
@@ -102,23 +87,12 @@ public class FileTypeTest
             catch (IOException e)  
             {  
                 return null;  
-            }  
-            catch (Exception e)  
-            {  
-                return null;  
-            }  
+            }
         }  
         return null;  
     }    
-    
-    /**  
-     * Created on 2010-7-1   
-     * <p>Discription:[getFileByFile,获取文件类型,包括图片,若格式不是已配置的,则返回null]</p>  
-     * @param file  
-     * @return fileType  
-     * @author:[shixing_11@sina.com]  
-     */    
-    public final static String getFileByFile(File file)    
+
+    public static String getFileByFile(File file)
     {    
         String filetype = null;    
         byte[] b = new byte[50];    
@@ -140,64 +114,32 @@ public class FileTypeTest
         return filetype;    
     }    
         
-    /**  
-     * Created on 2010-7-1   
-     * <p>Discription:[getFileTypeByStream]</p>  
-     * @param b  
-     * @return fileType  
-     * @author:[shixing_11@sina.com]  
-     */    
-    public final static String getFileTypeByStream(byte[] b)    
+
+    public static String getFileTypeByStream(byte[] b)
     {    
-        String filetypeHex = String.valueOf(getFileHexString(b));    
-        Iterator<Entry<String, String>> entryiterator = FILE_TYPE_MAP.entrySet().iterator();    
-        while (entryiterator.hasNext()) {    
-            Entry<String,String> entry =  entryiterator.next();    
-            String fileTypeHexValue = entry.getValue();    
-            if (filetypeHex.toUpperCase().startsWith(fileTypeHexValue)) {    
-                return entry.getKey();    
-            }    
+        String fileTypeHex = String.valueOf(getFileHexString(b));
+        for (Entry<String, String> entry : FILE_TYPE_MAP.entrySet()) {
+            String fileTypeHexValue = entry.getValue();
+            if (fileTypeHex.toUpperCase().startsWith(fileTypeHexValue)) {
+                return entry.getKey();
+            }
         }    
         return null;    
     }    
-        
-    /** 
-     * Created on 2010-7-2  
-     * <p>Discription:[isImage,判断文件是否为图片]</p> 
-     * @param file 
-     * @return true 是 | false 否 
-     * @author:[shixing_11@sina.com] 
-     */  
-    public static final boolean isImage(File file){  
-        boolean flag = false;  
-        try  
-        {  
+
+    public static boolean isImage(File file){
+        try {
             BufferedImage bufreader = ImageIO.read(file);  
             int width = bufreader.getWidth();  
-            int height = bufreader.getHeight();  
-            if(width==0 || height==0){  
-                flag = false;  
-            }else {  
-                flag = true;  
-            }  
+            int height = bufreader.getHeight();
+            return width != 0 && height != 0;
+        }catch (Exception e) {
+            e.printStackTrace();
         }  
-        catch (IOException e)  
-        {  
-            flag = false;  
-        }catch (Exception e) {  
-            flag = false;  
-        }  
-        return flag;  
+        return false;
     }  
-      
-    /**  
-     * Created on 2010-7-1   
-     * <p>Discription:[getFileHexString]</p>  
-     * @param b  
-     * @return fileTypeHex  
-     * @author:[shixing_11@sina.com]  
-     */    
-    public final static String getFileHexString(byte[] b)    
+
+    public static String getFileHexString(byte[] b)
     {    
         StringBuilder stringBuilder = new StringBuilder();    
         if (b == null || b.length <= 0)    

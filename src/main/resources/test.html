@@ -42,6 +42,29 @@
             context.font = "20 宋体";
             context.fillText("你好",10 ,50);
         },2000)
+
+
+        var socket = new WebSocket("ws://121.5.181.138:10000/websocket")
+        socket.onmessage = function (event) {
+            console.log(event.data)
+        }
+        socket.onopen = function (event) {
+            console.log("打开 websocket服务正常，浏览器支持WebSocket!")
+        }
+        socket.onclose = function (event) {
+            console.log("webSocket 关闭")
+        }
+        function send(message){
+            if (socket.readyState == WebSocket.OPEN) {
+                socket.send(message)
+            }else{
+                alert("websoket 连接建立失败")
+            }
+        }
     </script>
+    <form onsubmit="return false;">
+        <input type="text" name="message" value="nettysafdsf"/>
+        <input type="button" value="go" onclick="send(this.form.message.value);">
+    </form>
 </body>
 </html>

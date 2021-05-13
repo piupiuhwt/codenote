@@ -66,8 +66,8 @@
 
 <script src="./js/lucky.js"></script>
 <script>
-    const prizesUrl = "http://localhost:8088/prizes";
-    const resultUrl = "http://localhost:8088/result";
+    const prizesUrl = "https://www.hongxiaoqi.cn/turntable/prizes";
+    const resultUrl = "https://www.hongxiaoqi.cn/turntable/result";
     fetch(prizesUrl)
         .then(function (response) {
             return response.json()
@@ -111,11 +111,10 @@
                     fetch(resultUrl).then(function (response) {
                         return response.json()
                     }).then(function (data) {
-                        luckyWheel.stop(data)
+                        setTimeout(() => {
+                            luckyWheel.stop(data)
+                        }, 2000)
                     })
-                    // setTimeout(() => {
-                    //     luckyWheel.stop(Math.random() * 8 >> 0)
-                    // }, 3000)
                 },
                 end (prize) {
                     $('#alert-body').html('<img src="test.png" height="100" width="100"/>'+"吃吃吃"+prize.title)
