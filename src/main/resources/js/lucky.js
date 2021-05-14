@@ -481,9 +481,8 @@
             }, n.defaultStyle = {}, n._defaultStyle = {
                 fontSize: "18px",
                 fontColor: "#000",
-                fontStyle: "sans-serif",
+                fontStyle: "tiansu",
                 fontWeight: "400",
-                fontFamily: "arial",
                 lineHeight: "",
                 background: "transparent",
                 wordWrap: !0,
@@ -517,9 +516,8 @@
                 return n({
                     fontSize: "18px",
                     fontColor: "#000",
-                    fontStyle: "sans-serif",
+                    fontStyle: "tiansu",
                     fontWeight: "400",
-                    fontFamily: "arial",
                     background: "transparent",
                     wordWrap: !0,
                     lengthLimit: "90%"
@@ -628,9 +626,8 @@
                     }
                 })), t.fonts && t.fonts.forEach((function (t) {
                     var e = t.fontColor || a.fontColor, n = t.fontWeight || a.fontWeight,
-                        r = i.getLength(t.fontSize || a.fontSize), h = t.fontStyle || a.fontStyle,
-                        fam = t.fontFamily || a.fontFamily;
-                    o.fillStyle = e, o.font = n + " " + (r >> 0) + "px " + h + " " + fam;
+                        r = i.getLength(t.fontSize || a.fontSize), h = t.fontStyle || a.fontStyle;
+                    o.fillStyle = e, o.font = n + " " + (r >> 0) + "px " + h;
                     var c = [], p = String(t.text);
                     if (Object.prototype.hasOwnProperty.call(t, "wordWrap") ? t.wordWrap : a.wordWrap) {
                         p = u(p);
@@ -661,9 +658,8 @@
                     }
                 })), t.fonts && t.fonts.forEach((function (t) {
                     var e = t.fontColor || a.fontColor, r = t.fontWeight || a.fontWeight,
-                        s = i.getLength(t.fontSize || a.fontSize), u = t.fontStyle || a.fontStyle,
-                        fam = t.fontFamily || a.fontFamily;
-                    o.fillStyle = e, o.font = r + " " + (s >> 0) + "px " + u + " " + fam, String(t.text).split("\n").forEach((function (e, i) {
+                        s = i.getLength(t.fontSize || a.fontSize), u = t.fontStyle || a.fontStyle;
+                    o.fillStyle = e, o.font = r + " " + (s >> 0) + "px " + u, String(t.text).split("\n").forEach((function (e, i) {
                         o.fillText(e, l(e), f(t, n, i))
                     }))
                 }))
@@ -718,9 +714,9 @@
                 borderRadius: 20,
                 fontColor: "#000",
                 fontSize: "18px",
-                fontStyle: "sans-serif",
+                fontStyle: "tiansu",
+                fontFamily: "宋体",
                 fontWeight: "400",
-                fontFamily: "arial",
                 lineHeight: "",
                 background: "transparent",
                 shadow: "",
@@ -731,7 +727,6 @@
                 shadow: "",
                 fontStyle: "",
                 fontWeight: "",
-                fontFamily: "",
                 fontSize: "",
                 lineHeight: "",
                 fontColor: ""
@@ -760,9 +755,8 @@
                     borderRadius: 20,
                     fontColor: "#000",
                     fontSize: "18px",
-                    fontStyle: "sans-serif",
+                    fontStyle: "tiansu",
                     fontWeight: "400",
-                    fontFamily: "arial",
                     background: "transparent",
                     shadow: "",
                     wordWrap: !0,
@@ -921,10 +915,9 @@
                 })), t.fonts && t.fonts.forEach((function (e) {
                     var n = p && f.fontStyle ? f.fontStyle : e.fontStyle || l.fontStyle,
                         r = p && f.fontWeight ? f.fontWeight : e.fontWeight || l.fontWeight,
-                        fam = p && f.fontFamily ? f.fontFamily : e.fontFamily || l.fontFamily,
                         h = p && f.fontSize ? i.getLength(f.fontSize) : i.getLength(e.fontSize || l.fontSize),
                         c = p && f.lineHeight ? f.lineHeight : e.lineHeight || l.lineHeight || e.fontSize || l.fontSize;
-                    o.font = r + " " + (h >> 0) + "px " + n +" " + fam, o.fillStyle = p && f.fontColor ? f.fontColor : e.fontColor || l.fontColor;
+                    o.font = r + " " + (h >> 0) + "px " + n, o.fillStyle = p && f.fontColor ? f.fontColor : e.fontColor || l.fontColor;
                     var d = [], g = String(e.text);
                     if (Object.prototype.hasOwnProperty.call(e, "wordWrap") ? e.wordWrap : l.wordWrap) {
                         g = u(g);

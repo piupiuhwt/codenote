@@ -4,7 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="./js/jquery.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
     <style>
+        html,body{
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            height: 100%;
+        }
         @font-face {
             font-family: tiansu;
             src: url("./aa.ttf");
@@ -17,10 +27,15 @@
         }
         #title {
             text-align: center;
+            width: 100%;
+            align-self: center;
             height: 40px;
             font-family: tiansu;
             font-size: 30px;
-            margin-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        #my-lucky{
+            margin: 0 auto;
         }
     </style>
 </head>
@@ -30,24 +45,43 @@
         神奇的餐餐转盘
     </div>
     <div id="my-lucky"></div>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+<!--                <div class="modal-header">-->
+<!--                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+<!--                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>-->
+<!--                </div>-->
+                <div class="modal-body" id="alert-body" style="font-family: tiansu;font-size: 24px">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!--<script src="./js/lucky-canvas.umd.min.js"></script>-->
 <script src="./js/lucky.js"></script>
 <script>
-    fetch('https://www.hongxiaoqi.cn/turntable/prizes')
-        .then(function(response){
-            return response.json();
+    const prizesUrl = "https://www.hongxiaoqi.cn/turntable/prizes";
+    const resultUrl = "https://www.hongxiaoqi.cn/turntable/result";
+    fetch(prizesUrl)
+        .then(function (response) {
+            return response.json()
         })
-        .then(function(jsonData){
+        .then(function (result){
             // 设置奖品
-            const prizes = [];
-            let data = jsonData || ['煮面', '紫菜卷', '麻辣烫', '五爷拌面', '烧烤', '西餐', '苕粉'];
+            const prizes = []
+            let data = result || ['煮面', '紫菜卷', '麻辣烫', '五爷拌面', '烧烤', '自己做', '苕粉','喝粥']
             data.forEach((item, index) => {
                 prizes.push({
                     title: item,
                     background: index % 2 ? '#ffffff' : '#ffffff',
-                    fonts: [{ text: item, top: '24%',fontSize: '30px',fontColor: '#000000',fontFamily: 'tiansu' }],
+                    fonts: [{ text: item, top: '24%',fontSize: '22px',fontColor: '#000000',fontStyle: 'tiansu' }],
                     // imgs:[{ src: `./img/${index}.png`, width: '30%', top: '35%' }],
                 })
             })
@@ -58,6 +92,9 @@
                 height: '300px',
             }, {
                 prizes: prizes,
+                defaultConfig: {
+                    gutter: '3px'
+                },
                 defaultStyle: {
                     fontColor: '#000000',
                     fontSize: '14px'
@@ -71,22 +108,22 @@
                     },
                 ],
                 start () {
-                    luckyWheel.play();
-                    fetch('https://www.hongxiaoqi.cn/turntable/result')
-                        .then(function(response){
-                            return response.json();
-                        })
-                        .then(function(jsonData){
-                            setTimeout(() => {
-                                luckyWheel.stop(jsonData)
-                            }, 2000)
-                        })
+                    luckyWheel.play()
+                    fetch(resultUrl).then(function (response) {
+                        return response.json()
+                    }).then(function (data) {
+                        setTimeout(() => {
+                            luckyWheel.stop(data)
+                        }, 2000)
+                    })
                 },
                 end (prize) {
-                    alert(`恭喜你获得${prize.title}`)
+                    $('#alert-body').html('<img src="test.png" height="100" width="100"/>'+"吃吃吃"+prize.title)
+                    $('#myModal').modal('toggle')
                 },
             })
         })
+
 </script>
 </body>
 </html>

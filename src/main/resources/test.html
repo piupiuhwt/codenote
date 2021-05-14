@@ -3,10 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        @font-face {
+            font-family: tiansu;
+            src: url("./aa.ttf");
+        }
+    </style>
 </head>
 <body>
     <div onkeydown="getposition(event)" onclick="getposition(event)" contenteditable>
         <span>adfadfadfads</span>fadsfsda<span>fadfasdfasdf</span>
+    </div>
+    <div>
+        <canvas height="300" width="300" id="tt"></canvas>
     </div>
     <script>
         function getposition(event){
@@ -23,6 +32,39 @@
             let focusOffset = document.getSelection().focusOffset;
             console.log(focusOffset)
         }
+        let tt = document.getElementById("tt");
+        var context = tt.getContext("2d");
+        context.font = "40px tiansu";
+        context.fillText("你好",10 ,50);
+
+        setTimeout(function(){
+            context.clearRect(0,0,tt.width,tt.height);
+            context.font = "20 宋体";
+            context.fillText("你好",10 ,50);
+        },2000)
+
+
+        var socket = new WebSocket("ws://121.5.181.138:10000/websocket")
+        socket.onmessage = function (event) {
+            console.log(event.data)
+        }
+        socket.onopen = function (event) {
+            console.log("打开 websocket服务正常，浏览器支持WebSocket!")
+        }
+        socket.onclose = function (event) {
+            console.log("webSocket 关闭")
+        }
+        function send(message){
+            if (socket.readyState == WebSocket.OPEN) {
+                socket.send(message)
+            }else{
+                alert("websoket 连接建立失败")
+            }
+        }
     </script>
+    <form onsubmit="return false;">
+        <input type="text" name="message" value="nettysafdsf"/>
+        <input type="button" value="go" onclick="send(this.form.message.value);">
+    </form>
 </body>
 </html>
