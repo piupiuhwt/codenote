@@ -8,9 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * 互斥信号量测试
+ */
 public class MutexTest {
+    //锁变量 monitor
     public static volatile long mutex = 0 ;
 
+    //阻塞列表
     public static List<Thread> threads = new ArrayList<>();
 
     public static volatile Long a = 12L;
@@ -23,6 +28,7 @@ public class MutexTest {
             while (true){
                 System.out.println(MutexTest.mutex+"--------------");
                 while (MutexTest.mutex == 0){
+
                     unsafe.compareAndSwapLong(MutexTest.class, mutexOffset, 0, 1);
                     System.out.println(MutexTest.mutex);
                 }
@@ -48,6 +54,7 @@ public class MutexTest {
             while (true){
                 System.out.println(MutexTest.mutex+"--------------");
                 while (MutexTest.mutex == 0){
+                    //利用csa操作 进行monitor线程占用
                     unsafe.compareAndSwapLong(MutexTest.class, mutexOffset, 0, 2);
                     System.out.println(MutexTest.mutex);
                 }
