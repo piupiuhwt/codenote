@@ -12,6 +12,7 @@ import java.lang.management.ManagementFactory;
 import java.nio.charset.Charset;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Scanner;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
@@ -24,25 +25,54 @@ public class ZipRelation {
         File a = new File(deskTopPath + "a.rar");
         File b = new File(deskTopPath + "b.7z");
         File c = new File(deskTopPath + "c.zip");
+        File d = new File(deskTopPath + "d.doc");
+
+//        try {
+//            FileInputStream inputStream = new FileInputStream(d);
+//            ZipInputStream zipInputStream = new ZipInputStream(inputStream);
+//            System.out.println(zipInputStream.getNextEntry());
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 //        un7zFile(a);
-//        unzipFile(deskTopPath,c);
+//        unzipFile(deskTopPath,d);
 //        unRarFile(a);
 
 
-        File cccc = new File("C:\\Users\\hong.wentao\\Desktop\\test\\a.rar");
+        File cccc = new File("C:\\Users\\hong.wentao\\Desktop\\test\11.rar");
         String outPath = "C:\\Users\\hong.wentao\\Desktop\\test";
         String appPath = System.getProperty("user.dir")+"\\utils\\7z\\7z.exe";
         unCompressByCMD(cccc, appPath, outPath);
     }
 
     public static void unCompressByCMD(File file,String appPath,String outPath){
-        String cmd = appPath + " e "+ file.getAbsolutePath() + " -o" + outPath + " -aoa";
-        try {
+        String cmd = appPath + " e "+ file.getAbsolutePath() + " -o" + outPath + " -aoa -padf";
+        System.out.println(cmd);
+        Thread thread = Thread.currentThread();
+        Thread thread1 = new Thread(() -> {
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            thread.interrupt();
+        });
+//        thread1.start();
+        try{
+            int exitVal = 0;
             Process exec = Runtime.getRuntime().exec(cmd);
-            int exitVal = exec.waitFor();
-            System.out.println(exitVal == 0 ? "成功" : "失败");
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+            exitVal = exec.waitFor();
+            InputStream inputStream = exec.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+            String f;
+            while ((f = reader.readLine()) !=null) {
+                System.out.println(f);
+            }
+            System.out.println(exitVal);
+        }catch (Exception e){
+            System.out.println(e);
         }
     }
 
@@ -94,9 +124,6 @@ public class ZipRelation {
                     continue;
                 }
                 InputStream inputStream = zipFile.getInputStream(zipEntry);
-                if(name.endsWith(".zip")){
-                    ZipInputStream zipInputStream = new ZipInputStream(inputStream);
-                }
                 writeFile(inputStream, name, deskTopPath);
             }
         } catch (IOException e) {
