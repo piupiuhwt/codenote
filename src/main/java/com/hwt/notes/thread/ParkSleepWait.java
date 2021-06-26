@@ -5,29 +5,40 @@ import sun.misc.Unsafe;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.LockSupport;
 
 public class ParkSleepWait {
     public static Unsafe unsafe = UnsafeUtil.getUnsafe();
 
     public static void main(String[] args) throws InterruptedException, IOException {
-        waitTest();
+//        waitTest();
+        System.out.println(-3 >> 1);
+        System.out.println(Integer.MAX_VALUE);
+//        parkSleep();
     }
 
     /**
      * 用于测试 park 后的线程可不可以被interrupt中断
-     * 结果为不可以
+     * 结果为可以  同时如果后续不清空标志位则后面的park都无效，清空则有效需要再次感知中断
      */
-    public static void parkSleep(){
+    public static void parkSleep() throws InterruptedException {
         Thread t1 = new Thread(() -> {
-            UnsafeUtil.getUnsafe().park(false, 0);
+            // park（blocker） blocker的作用是阻塞时记录下此对象的信息便于分析
+            // blocker 是Thread类中的parkBlocker这个属性
+            LockSupport.park(unsafe);
+            // 是否清空中断标志位，此方法清空标志位
+            System.out.println(Thread.interrupted());
+            // 是否清空中断标志位，此方法不清空标志位
+            System.out.println(Thread.currentThread().isInterrupted());
+            LockSupport.park(unsafe);
+//            UnsafeUtil.getUnsafe().park(false, 0);
             System.out.println("===============");
         });
-
+        t1.start();
         try {
             Thread.sleep(1000);
             t1.interrupt();
-            int read = System.in.read();
-        } catch (IOException | InterruptedException e) {
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
