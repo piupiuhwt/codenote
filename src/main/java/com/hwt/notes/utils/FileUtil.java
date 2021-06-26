@@ -1,5 +1,7 @@
 package com.hwt.notes.utils;
 
+import org.apache.commons.io.FileUtils;
+
 import java.io.*;
 import java.net.URL;
 import java.nio.file.NoSuchFileException;
@@ -36,7 +38,29 @@ public class FileUtil {
     }
 
     public static void main(String[] args) throws NoSuchFileException, FileNotFoundException {
-        readFile();
-        System.out.println(System.getProperty("user.dir"));
+        String xlPath = "D:\\迅雷下载";
+        File file = new File(xlPath);
+        for (File listFile : file.listFiles()) {
+            if (!listFile.isDirectory()) {
+                continue;
+            }
+            moveFiles(listFile);
+        }
+    }
+
+    public static void moveFiles(File dir){
+        for (File file1 : dir.listFiles()) {
+            if (file1.isDirectory()) {
+                moveFiles(file1);
+                continue;
+            }
+            if (file1.getName().endsWith(".mp4") || file1.getName().endsWith(".MP4")) {
+                try {
+                    FileUtils.moveFile(file1,new File("D:\\暂存\\新建文件夹 (3)\\all\\"+file1.getName()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }
