@@ -6,7 +6,7 @@ import org.apache.poi.ss.formula.functions.T;
 
 import java.util.concurrent.*;
 
-public interface FutureListener<F extends Future<?>> {
+public interface FutureListener<F extends Future> {
 
     public void operationComplete(F future);
 
